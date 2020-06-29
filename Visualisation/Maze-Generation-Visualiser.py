@@ -77,13 +77,9 @@ def removeWalls(current, choice):
 
 """Fill in the 'corners' of the grid (due to the walls being square)"""
 def cornerFill():
-    c = c2 = 0
     for x in range(len(grid)+1):
         for y in range(len(grid)+1):
-            pygame.draw.rect(screen, (20,20,20), (x*width+c, y*height+c2, width, height))
-            c2 += height
-        c2 = 0
-        c += width
+            pygame.draw.rect(screen, (20,20,20), (x*width*2, y*height*2, width, height))
 
 
 """Define the grid, set the current Cell and initialise the stack"""
@@ -91,18 +87,13 @@ grid = [[Cell(x, y) for x in range(24)] for y in range(24)]
 current = grid[0][0]
 stack = []
 
-
+screen.fill((210, 210 ,210))
 """Main loop"""
 exit = False
 while not exit:
-    c = 0
-    c2 = 0
     for x in range(len(grid)):
         for y in range(len(grid)):
-            grid[x][y].show(width, height, c2+width, c+height) # Draw walls
-            c2 += height
-        c2 = 0
-        c += width
+            grid[x][y].show(width, height, (y+1)*width, (x+1)*height) # Draw walls
     
     cornerFill()
 
@@ -122,7 +113,7 @@ while not exit:
 
         current = choice
     
-    
+
     elif stack: # If the current has no neighbours go back to the last Cell on the stack
         current = stack.pop()
 
