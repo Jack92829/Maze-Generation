@@ -9,18 +9,15 @@ class Cell {
 
     // A method of the Cell class to check if a Cell has surrounding walkable Cells
     hasChildren(grid) {
-        var a = [[1, 0], [-1,0], [0, 1], [0, -1]];
-        var children = [];
+        const a = [[1, 0], [-1,0], [0, 1], [0, -1]];
+        const children = [];
         
-        var i;
-        for (i of a){
-            var x = i[0];
-            var y = i[1];
+        for ([x, y] of a){
             if ([grid.length, -1].includes(this.x+x) || [grid.length, -1].includes(this.y+y)) {
                 continue;
             }
 
-            var child = grid[this.y+y][this.x+x];
+            let child = grid[this.y+y][this.x+x];
 
             if (child.visited) {
                 continue;
@@ -85,7 +82,7 @@ function drawBorder(grid) {
         grid[i] = x;
     }
 
-    var hm = [];
+    const hm = [];
     for (m=0; m<grid.length; m++) { 
         hm.push('⬛');
     }
@@ -97,9 +94,9 @@ function drawBorder(grid) {
 
 // Convert the maze to ASCII characters to be displayed
 function displayMaze(grid) {
-    var binGrid = [];
+    let binGrid = [];
     for (x=0; x < grid.length*2+1; x++) {
-        var lst = [];
+        const lst = [];
         if (x % 2 == 0) {
             for (n=0; n < grid.length*2+1; n++) {
                 if (n % 2 != 0) {
@@ -118,16 +115,16 @@ function displayMaze(grid) {
             binGrid.push(lst);
         }
     }
-    
-    var binGrid = drawWalls(grid, binGrid);
 
-    var binGrid = drawBorder(binGrid);
+    binGrid = drawWalls(grid, binGrid);
 
-    var toPrint = [];
+    binGrid = drawBorder(binGrid);
+
+    const toPrint = [];
     for (x=0; x<binGrid.length; x++) {
         toPrint.push(binGrid[x].join(''));
     }
-    console.log(toPrint.join('\n'))
+    console.log(toPrint.join('\n'));
 }
 
 
@@ -138,10 +135,10 @@ function random(mn, mx) {
 
 
 // Defining the dimensions of the grid
-var grid = [];
-var size = 20
+const grid = [];
+const size = 20
 for (y=0; y<size; ++y) {
-    var inner = []
+    let inner = []
     for (x=0; x<size; x++) {
         inner.push(new Cell(x, y));
     }
@@ -150,17 +147,17 @@ for (y=0; y<size; ++y) {
 
 
 // Set the start cell and initialise the stack
-var current = grid[0][0];
-var stack = [];
+let current = grid[0][0];
+const stack = [];
 
 
 // Main loop that generates the maze
 while (true) {
     current.visited = true;
-    var children = current.hasChildren(grid);
+    let children = current.hasChildren(grid);
 
     if (children.length > 0) {
-        var choice = children[random(0, children.length)];
+        let choice = children[random(0, children.length)];
 
         choice.visited = true;
 
@@ -168,10 +165,10 @@ while (true) {
 
         current, choice = removeWalls(current, choice);
 
-        var current = choice;
+        current = choice;
     }
     else if (stack.length > 0) {
-        var current = stack.pop();
+        current = stack.pop();
     }
     else {break}
 }
