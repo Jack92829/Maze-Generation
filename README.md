@@ -5,6 +5,8 @@ The algorithm was used in a variety of ways, including as a visualisation, an im
 
 Note: The ASCII-maze generator is not suitable for displaying large mazes due to text wrap
 
+Note: A JavaScript version of the ASCII-maze generation can be found as well
+
 ![Alt Text](https://media2.giphy.com/media/fuEG943QAMbIy1TEUX/giphy.gif)
 
 
