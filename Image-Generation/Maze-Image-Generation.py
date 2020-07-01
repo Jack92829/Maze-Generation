@@ -4,17 +4,17 @@ import numpy as np
 import os, sys
 
 
-"""Cell class that defines each walkable Cell on the grid"""
 class Cell():
-    def __init__(self, x, y):
+    """Cell class that defines each walkable Cell on the grid"""
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
         self.visited = False
         self.walls = [True, True, True, True] # Left, Right, Up, Down
 
 
-    """Check if the Cell has any surrounding unvisited Cells that are walkable"""
-    def haschildren(self, grid):
+    def haschildren(self, grid: list) -> list:
+        """Check if the Cell has any surrounding unvisited Cells that are walkable"""
         a = [(1, 0), (-1,0), (0, 1), (0, -1)]
         children = []
         for x, y in a:
@@ -28,8 +28,8 @@ class Cell():
         return children
 
 
-"""Removeing the wall between two Cells"""
-def removeWalls(current, choice):
+def removeWalls(current: Cell, choice: Cell):
+    """Removeing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
         choice.walls[0] = False
@@ -44,8 +44,8 @@ def removeWalls(current, choice):
         choice.walls[3] = False
 
 
-"""Draw existing walls around Cells"""
-def drawWalls(grid, binGrid):
+def drawWalls(grid: list, binGrid: list) -> list:
+    """Draw existing walls around Cells"""
     for yi, y in enumerate(grid):
         for xi, x in enumerate(y):
             for i, w in enumerate(x.walls):
@@ -60,8 +60,8 @@ def drawWalls(grid, binGrid):
     return binGrid
 
 
-"""Draw a border around the maze"""
-def drawBorder(grid):
+def drawBorder(grid: list) -> list:
+    """Draw a border around the maze"""
     for i, x in enumerate(grid): # Left and Right border
         x[0] = x[len(grid)-1] = (20,20,20)
         grid[i] = x
@@ -70,8 +70,8 @@ def drawBorder(grid):
     return grid
 
 
-"""Turn the grid into RGB values to then be turned into an image"""
-def prepareGrid(grid):
+def prepareGrid(grid: list) -> list:
+    """Turn the grid into RGB values to then be turned into an image"""
     binGrid = []
     for x in range(len(grid)+len(grid)+1):
         if x % 2 == 0:
@@ -86,8 +86,8 @@ def prepareGrid(grid):
     return binGrid
 
 
-"""Turn the grid into a numpy array to then be resized"""
-def prepareImage(grid):
+def prepareImage(grid: list) -> np.ndarray:
+    """Turn the grid into a numpy array to then be resized"""
     grid = np.uint8(np.array([np.array(xi) for xi in grid]))
 
     scale_percent = 1000
@@ -97,8 +97,8 @@ def prepareImage(grid):
     return cv2.resize(grid, (width, height), interpolation=cv2.INTER_AREA)
 
 
-"""Generate a maze of Cell classes to then be turned into an image later"""
-def generateMaze():
+def generateMaze() -> list:
+    """Generate a maze of Cell classes to then be turned into an image later"""
     size = int(input('Enter a maze size: '))
     grid = [[Cell(x, y) for x in range(size)] for y in range(size)]
     current = grid[0][0]
@@ -124,15 +124,14 @@ def generateMaze():
             return grid
 
 
-"""Save the image in the same directory as the python script under a given name"""
-def createImage(grid):
+def createImage(grid: list):
+    """Save the image in the same directory as the python script under a given name"""
     image = prepareImage(grid)
 
     name = input('\nEnter a name to save the image under\nIt will be stored in the same directory as this python script\n>>> ')
     result = cv2.imwrite(f'{os.path.dirname(sys.argv[0])}/{name}.png', image)
     
-    print(f'Status: {"Success" if result else "Failed"}')
-
+    print(f'Status: {"Image successfully created!" if result else "Something went wrong"}')
 
 grid = generateMaze()
 

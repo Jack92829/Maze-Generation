@@ -10,17 +10,17 @@ screen = pygame.display.set_mode((735,735))
 pygame.display.set_caption('Maze')
 
 
-"""Cell class that defines each walkable Cell on the grid"""
 class Cell():
-    def __init__(self, x, y):
+    """Cell class that defines each walkable Cell on the grid"""
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
         self.visited = False
         self.walls = [True, True, True, True] # Left, Right, Up, Down
 
 
-    """Check if the Cell has any surrounding unvisited Cells that are walkable"""
-    def haschildren(self, grid):
+    def haschildren(self, grid: list) -> list:
+        """Check if the Cell has any surrounding unvisited Cells that are walkable"""
         a = [(1, 0), (-1,0), (0, 1), (0, -1)] # Surrounding squares
         children = []
 
@@ -37,8 +37,8 @@ class Cell():
         return children
 
 
-    """Draw a Cells existing walls"""
-    def show(self, width, height, c, c2):
+    def show(self, width: int, height: int, c: int, c2: int):
+        """Draw a Cells existing walls"""
         x = self.x
         y = self.y
 
@@ -52,15 +52,15 @@ class Cell():
             pygame.draw.rect(screen, (20,20,20), (width*x+c, height*y+c2+height, width, height))  
     
 
-    """Mark the current cell"""
-    def mark(self, width, height):
+    def mark(self, width: int, height: int):
+        """Mark the current cell"""
         x = self.x*width
         y = self.y*height
         pygame.draw.rect(screen, (134, 46, 222), (x*2+width,y*2+height, width, height))
 
 
-"""Removeing the wall between two Cells"""
-def removeWalls(current, choice):
+def removeWalls(current: Cell, choice: Cell):
+    """Removeing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
         choice.walls[0] = False
@@ -75,8 +75,8 @@ def removeWalls(current, choice):
         choice.walls[3] = False
 
 
-"""Fill in the 'corners' of the grid (due to the walls being square)"""
 def cornerFill():
+    """Fill in the 'corners' of the grid (due to the walls being square)"""
     for x in range(len(grid)+1):
         for y in range(len(grid)+1):
             pygame.draw.rect(screen, (20,20,20), (x*width*2, y*height*2, width, height))

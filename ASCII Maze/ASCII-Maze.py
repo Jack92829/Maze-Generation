@@ -1,17 +1,17 @@
 import random
 
 
-"""Cell class that defines each walkable Cell on the grid"""
 class Cell():
-    def __init__(self, x, y):
+    """Cell class that defines each walkable Cell on the grid"""
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
         self.visited = False
         self.walls = [True, True, True, True] # Left, Right, Up, Down
 
 
-    """Check if the Cell has any surrounding unvisited Cells that are walkable"""
-    def haschildren(self, grid):
+    def haschildren(self, grid: list) -> list:
+        """Check if the Cell has any surrounding unvisited Cells that are walkable"""
         a = [(1, 0), (-1,0), (0, 1), (0, -1)]
         children = []
         for x, y in a:
@@ -25,8 +25,8 @@ class Cell():
         return children
 
 
-"""Removeing the wall between two Cells"""
-def removeWalls(current, choice):
+def removeWalls(current: Cell, choice: Cell):
+    """Removeing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
         choice.walls[0] = False
@@ -41,8 +41,8 @@ def removeWalls(current, choice):
         choice.walls[3] = False
 
 
-"""Draw existing walls around Cells"""
-def drawWalls(grid, binGrid):
+def drawWalls(grid: list, binGrid: list) -> list:
+    """Draw existing walls around Cells"""
     for yi, y in enumerate(grid):
         for xi, x in enumerate(y):
             for i, w in enumerate(x.walls):
@@ -57,8 +57,8 @@ def drawWalls(grid, binGrid):
     return binGrid
 
 
-"""Draw a border around the maze"""
-def drawBorder(grid):
+def drawBorder(grid: list) -> list:
+    """Draw a border around the maze"""
     for i, x in enumerate(grid):
         x[0] = x[len(grid)-1] = '⬛'
         grid[i] = x
@@ -67,8 +67,8 @@ def drawBorder(grid):
     return grid
 
 
-"""Draw the maze using ASCII characters and display the maze"""
-def displayMaze(grid):
+def displayMaze(grid: list):
+    """Draw the maze using ASCII characters and display the maze"""
     binGrid = []
     for x in range(len(grid)+len(grid)+1):
         if x % 2 == 0:
