@@ -8,7 +8,7 @@ class Cell {
     }
 
     // A method of the Cell class to check if a Cell has surrounding walkable Cells
-    hasChildren(grid) {
+    getChildren(grid) {
         const a = [[1, 0], [-1,0], [0, 1], [0, -1]];
         const children = [];
         
@@ -47,7 +47,6 @@ function removeWalls(current, choice) {
         current.walls[2] = false;
         choice.walls[3] = false;
     }
-    return current, choice;
 }
 
 
@@ -71,7 +70,6 @@ function drawWalls(grid, binGrid) {
             }
         } 
     }
-    return binGrid;
 }
 
 
@@ -86,9 +84,8 @@ function drawBorder(grid) {
     for (m=0; m<grid.length; m++) { 
         hm.push('⬛');
     }
-
+    
     grid[0] = grid[grid.length-1] = hm;
-    return grid;
 }
 
 
@@ -116,9 +113,9 @@ function displayMaze(grid) {
         }
     }
 
-    binGrid = drawWalls(grid, binGrid);
+    drawWalls(grid, binGrid);
 
-    binGrid = drawBorder(binGrid);
+    drawBorder(binGrid);
 
     const toPrint = [];
     for (x=0; x<binGrid.length; x++) {
@@ -154,7 +151,7 @@ const stack = [];
 // Main loop that generates the maze
 while (true) {
     current.visited = true;
-    let children = current.hasChildren(grid);
+    let children = current.getChildren(grid);
 
     if (children.length > 0) {
         let choice = children[random(0, children.length)];
@@ -163,7 +160,7 @@ while (true) {
 
         stack.push(current);
 
-        current, choice = removeWalls(current, choice);
+        removeWalls(current, choice);
 
         current = choice;
     }
