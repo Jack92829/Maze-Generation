@@ -12,7 +12,7 @@ pygame.display.set_caption('Maze')
 
 class Cell():
     """Cell class that defines each walkable Cell on the grid"""
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
         self.visited = False
@@ -37,7 +37,7 @@ class Cell():
         return children
 
 
-    def show(self, width: int, height: int, c: int, c2: int) -> None:
+    def show(self, width: int, height: int, c: int, c2: int):
         """Draw a Cells existing walls"""
         x = self.x
         y = self.y
@@ -52,14 +52,14 @@ class Cell():
             pygame.draw.rect(screen, (20,20,20), (width*x+c, height*y+c2+height, width, height))  
     
 
-    def mark(self, width: int, height: int) -> None:
+    def mark(self, width: int, height: int):
         """Mark the current cell"""
         x = self.x*width
         y = self.y*height
         pygame.draw.rect(screen, (134, 46, 222), (x*2+width,y*2+height, width, height))
 
 
-def removeWalls(current: Cell, choice: Cell) -> None:
+def removeWalls(current: Cell, choice: Cell):
     """Removeing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
@@ -75,7 +75,7 @@ def removeWalls(current: Cell, choice: Cell) -> None:
         choice.walls[3] = False
 
 
-def cornerFill() -> None:
+def cornerFill():
     """Fill in the 'corners' of the grid (due to the walls being square)"""
     for x in range(len(grid)+1):
         for y in range(len(grid)+1):
