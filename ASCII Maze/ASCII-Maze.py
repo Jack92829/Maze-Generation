@@ -26,7 +26,7 @@ class Cell():
 
 
 def removeWalls(current: Cell, choice: Cell):
-    """Removeing the wall between two Cells"""
+    """Removing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
         choice.walls[0] = False
