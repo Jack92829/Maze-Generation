@@ -1,7 +1,7 @@
 import random
 
 
-class Cell():
+class Cell:
     """Cell class that defines each walkable Cell on the grid"""
     def __init__(self, x: int, y: int):
         self.x = x
@@ -10,7 +10,7 @@ class Cell():
         self.walls = [True, True, True, True] # Left, Right, Up, Down
 
 
-    def haschildren(self, grid: list) -> list:
+    def getChildren(self, grid: list) -> list:
         """Check if the Cell has any surrounding unvisited Cells that are walkable"""
         a = [(1, 0), (-1,0), (0, 1), (0, -1)]
         children = []
@@ -26,7 +26,7 @@ class Cell():
 
 
 def removeWalls(current: Cell, choice: Cell):
-    """Removing the wall between two Cells"""
+    """Removeing the wall between two Cells"""
     if choice.x > current.x:     
         current.walls[1] = False
         choice.walls[0] = False
@@ -43,38 +43,39 @@ def removeWalls(current: Cell, choice: Cell):
 
 def drawWalls(grid: list, binGrid: list) -> list:
     """Draw existing walls around Cells"""
-    for yi, y in enumerate(grid):
-        for xi, x in enumerate(y):
+    for yindex, y in enumerate(grid):
+        for xindex, x in enumerate(y):
             for i, w in enumerate(x.walls):
                 if i == 0 and w:
-                    binGrid[yi*2+1][xi*2] = '⬛'
+                    binGrid[yindex*2+1][xindex*2] = '⬛'
                 if i == 1 and w:
-                    binGrid[yi*2+1][xi*2+2] = '⬛'
+                    binGrid[yindex*2+1][xindex*2+2] = '⬛'
                 if i == 2 and w:
-                    binGrid[yi*2][xi*2+1] = '⬛'
+                    binGrid[yindex*2][xindex*2+1] = '⬛'
                 if i == 3 and w:
-                    binGrid[yi*2+2][xi*2+1] = '⬛'
+                    binGrid[yindex*2+2][xindex*2+1] = '⬛'
     return binGrid
 
 
 def drawBorder(grid: list) -> list:
     """Draw a border around the maze"""
-    for i, x in enumerate(grid):
-        x[0] = x[len(grid)-1] = '⬛'
-        grid[i] = x
+    length = len(grid)
+    for row in grid:
+        row[0] = row[length-1] = '⬛'
         
-    grid[0] = grid[len(grid)-1] = ['⬛' for x in range(len(grid))] 
+    grid[0] = grid[length-1] = ['⬛'] * length
     return grid
 
 
 def displayMaze(grid: list):
     """Draw the maze using ASCII characters and display the maze"""
     binGrid = []
-    for x in range(len(grid)+len(grid)+1):
+    length = len(grid)*2+1
+    for x in range(length):
         if x % 2 == 0:
-            binGrid.append(['⬜' if x % 2 != 0 else '⬛' for x in range(len(grid)+len(grid)+1)])
+            binGrid.append(['⬜' if x % 2 != 0 else '⬛' for x in range(length)])
         else:
-            binGrid.append(['⬜' for x in range(len(grid)+len(grid)+1)])
+            binGrid.append(['⬜'] * length)
     
     binGrid = drawWalls(grid, binGrid)
             
@@ -83,17 +84,17 @@ def displayMaze(grid: list):
     print('\n'.join([''.join(x) for x in binGrid]))
 
 
-"""Request the user to input a maze size and initialise the maze, stack and initial Cell"""
+# Request the user to input a maze size and initialise the maze, stack and initial Cell
 size = int(input('Enter a maze size: '))
 grid = [[Cell(x, y) for x in range(size)] for y in range(size)]
 current = grid[0][0]
 stack = []
 
 
-"""Main loop to generate the maze"""
+# Main loop to generate the maze
 while True:
     current.visited = True
-    children = current.haschildren(grid)
+    children = current.getChildren(grid)
 
     if children:
         choice = random.choice(children)
@@ -111,5 +112,5 @@ while True:
         break
 
 
-"""Display the maze"""
+# Display the maze
 grid = displayMaze(grid)
