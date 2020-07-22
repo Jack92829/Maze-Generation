@@ -19,7 +19,7 @@ class Cell():
         self.walls = [True, True, True, True] # Left, Right, Up, Down
 
 
-    def haschildren(self, grid: list) -> list:
+    def getChildren(self, grid: list) -> list:
         """Check if the Cell has any surrounding unvisited Cells that are walkable"""
         a = [(1, 0), (-1,0), (0, 1), (0, -1)] # Surrounding squares
         children = []
@@ -102,7 +102,7 @@ while not exit:
 
     """If the current has neighours then choose a random one, mark it as visited, """
     """remove the walls between it and the current and set it as the new current"""
-    children = current.haschildren(grid) 
+    children = current.getChildren(grid) 
     if children:
         choice = random.choice(children)
         choice.visited = True
